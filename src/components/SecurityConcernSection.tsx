@@ -245,28 +245,28 @@ function EncryptionVisualizer({ scrollContainer }: { scrollContainer?: React.Ref
 // ── 보안 레이어 카드 ──────────────────────────────────────────────
 const LAYERS = [
   {
-    iconBefore: '🔓',
-    iconAfter: '🔒',
+    iconBefore: '🎭',
+    iconAfter: '🛡️',
     color: '#3182f6',
-    title: '유출되어도 원본을 알 수 없습니다',
-    sub: '강력한 암호화',
-    desc: '토스페이먼츠는 금융회사 수준의 철저한 보안 체계를 갖추고 있습니다. 만에 하나 정보가 유출되더라도, 얼굴 데이터 자체는 고도로 암호화되어 분산 저장되므로 복호화 키 없이는 원문 정보의 형태를 절대 알아낼 수 없습니다.',
+    title: '가짜 얼굴로는 절대 뚫을 수 없습니다',
+    sub: '실시간 안면 위변조 검증',
+    desc: '전용 단말기 \'토스 프론트\'의 정교한 스캐닝과 라이브니스(Liveness) 기술이 눈 깜빡임과 미세한 움직임을 감지해 사진이나 영상을 통한 위조를 원천 차단합니다. 또한, 얼굴의 기하학적 굴곡 깊이까지 계산하여 화장이나 헤어스타일 변화는 물론 쌍둥이까지 정확하게 구분해 냅니다.',
   },
   {
-    iconBefore: '👤',
-    iconAfter: '🎭',
-    color: '#8b5cf6',
-    title: '알아내더라도 결제할 수 없습니다',
-    sub: '라이브니스(Liveness) 기술',
-    desc: '암호화된 데이터를 기적적으로 복호화하여 알아내더라도, 그 정보를 결제에 쓸 수는 없습니다. 정보를 프린트해서 단말기에 대더라도 결제가 되지 않습니다. 사진이나 영상과 같은 2D 평면 데이터로는 절대 뚫을 수 없는 최첨단 라이브니스 기술이 적용되어 있기 때문입니다.',
-  },
-  {
-    iconBefore: '📄',
+    iconBefore: '📸',
     iconAfter: '🔒',
+    color: '#8b5cf6',
+    title: '원본 얼굴 사진은 즉시 영구 삭제됩니다',
+    sub: '암호 가치 변환 및 즉시 파기',
+    desc: '촬영된 얼굴은 단말기나 클라우드에 사진 형태로 절대 저장되지 않습니다. 획득 즉시 암호화된 벡터 데이터로 변환되며, 원본 사진은 나노초(ns) 단위로 완전히 파기됩니다. 복호화가 불가능한 일방향 암호화 방식을 적용하여, 혹시라도 정보가 유출되더라도 원래 얼굴을 복원하는 것은 전산학적으로 불가능합니다.',
+  },
+  {
+    iconBefore: '👀',
+    iconAfter: '🚨',
     color: '#22c55e',
-    title: '해지 즉시 결제 중지, 데이터는 안전하게 분리 보관',
-    sub: '안전한 정보 관리 및 폐기',
-    desc: '토스 앱에서 언제든 얼굴결제 서비스를 해지할 수 있으며, 해지 즉시 실시간 결제 기능은 완전히 중지됩니다. 단, 혹시 모를 명의도용이나 금융 사고를 방지하기 위해 얼굴 정보는 결제망과 완전히 격리된 채 1년간 안전하게 분리 보관된 후 흔적 없이 최종 폐기됩니다.',
+    title: '24시간 철통 감시, 의심 거래는 즉각 차단',
+    sub: '실시간 이상거래탐지 (FDS)',
+    desc: '단순한 얼굴 인식을 넘어, 당신의 평소 거래 맥락(결제 금액, 시간, 위치, 단말기 패턴 등)을 24시간 실시간으로 분석합니다. 만약 평소와 다른 위험하거나 의심스러운 결제 시도가 포착되면, 즉시 추가 인증을 요구하거나 한도를 낮춰 혹시 모를 신원 탈취 가능성까지 완벽하게 방어합니다.',
   },
 ];
 
@@ -465,11 +465,8 @@ export default function SecurityConcernSection({ containerRef }: { containerRef?
       <div style={{ width: '100%', margin: '15rem 0 5rem 0', display: 'flex', flexDirection: 'column' }}>
         {/* 타이틀과 첫 번째 스텝 사이의 간격을 압도적으로 넓힘 (기존 6rem -> 40vh) */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginBottom: '40vh', padding: '0 2rem' }}>
-          <div style={{ display: 'inline-block', background: '#EEF0F3', color: '#4E5968', padding: '0.5rem 1.5rem', borderRadius: '100px', fontSize: '1.1rem', fontWeight: 800, marginBottom: '2rem' }}>
-            🔒 철저한 3단계 보안
-          </div>
           <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: 900, color: '#191F28', letterSpacing: '-2px', margin: 0, textAlign: 'center', lineHeight: 1.2 }}>
-            가짜 얼굴부터 의심스러운 거래까지, <br /><span style={{ color: '#3182F6' }}>3중 방어막으로 완벽하게 차단합니다</span>
+            결제는 단 1초, 하지만 보안은 <br /><span style={{ color: '#3182F6' }}>24시간 내내 빈틈없이 지켜냅니다</span>
           </h1>
         </div>
 
@@ -511,14 +508,14 @@ function SecurityQASection() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
-          style={{ background: '#FFFFFF', border: '1px solid #F2F4F6', borderRadius: '32px', padding: '3rem', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '1.5rem', transition: 'all 0.3s ease' }}
+          style={{ background: 'rgba(255, 255, 255, 0.65)', border: '1px solid rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderRadius: '32px', padding: '3rem', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '1.5rem', transition: 'all 0.3s ease' }}
         >
           <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#3182F6', lineHeight: 1 }}>Q.</div>
           <h4 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#191F28', margin: 0, lineHeight: 1.4, wordBreak: 'keep-all' }}>
-            만약 해킹으로 내 얼굴 데이터가 유출되면 어떡하죠?
+            얼굴결제 서비스를 해지하면 제 데이터는 어떻게 되나요?
           </h4>
           <p style={{ fontSize: '1.1rem', color: '#4E5968', lineHeight: 1.6, margin: 0, wordBreak: 'keep-all', fontWeight: 500 }}>
-            토스페이먼츠는 <strong>금융회사 수준의 강력한 보안 체계</strong>를 갖추고 있습니다. 만에 하나 데이터가 유출되더라도, 모든 정보는 고도로 암호화되어 있어 복호화 키 없이는 원본 얼굴 형태를 절대 알아낼 수 없습니다.
+            토스 앱에서 언제든 얼굴결제 서비스를 해지할 수 있으며, 해지 즉시 실시간 결제 기능은 완전히 중지됩니다. 단, 혹시 모를 명의도용이나 금융 사고를 방지하기 위해 얼굴 정보는 결제망과 완전히 격리된 채 1년간 안전하게 분리 보관된 후 흔적 없이 최종 폐기됩니다.
           </p>
         </motion.div>
 
@@ -529,7 +526,7 @@ function SecurityQASection() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.15 }}
           whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
-          style={{ background: '#FFFFFF', border: '1px solid #F2F4F6', borderRadius: '32px', padding: '3rem', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '1.5rem', transition: 'all 0.3s ease' }}
+          style={{ background: 'rgba(255, 255, 255, 0.65)', border: '1px solid rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderRadius: '32px', padding: '3rem', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '1.5rem', transition: 'all 0.3s ease' }}
         >
           <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#3182F6', lineHeight: 1 }}>Q.</div>
           <h4 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#191F28', margin: 0, lineHeight: 1.4, wordBreak: 'keep-all' }}>

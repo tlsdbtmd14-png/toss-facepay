@@ -144,9 +144,15 @@ function LivenessVisualizer({ scrollContainerRef }: { scrollContainerRef?: React
   }, []);
 
   return (
-    <div style={{ height: '100vh', width: '100%', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', overflow: 'hidden' }}>
-
+    <div style={{ height: '100vh', width: '100%', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'transparent', overflow: 'hidden' }}>
         
+        {/* 상단 메인 타이틀 추가 */}
+        <div style={{ marginBottom: '6rem', textAlign: 'center' }}>
+          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, color: '#191F28', letterSpacing: '-2px', margin: 0, lineHeight: 1.3 }}>
+            오직 살아있는 '진짜 당신'만 <br /><span style={{ color: '#22C55E' }}>단 1초 만에 정확하게 알아봅니다</span>
+          </h1>
+        </div>
+
         <div style={{ display: 'flex', width: '100%', maxWidth: '1000px', padding: '0 2rem', gap: '4rem', alignItems: 'center' }}>
           
           {/* 좌측: 유저 (새로 업로드된 이미지로 깜빡임 구현) */}
