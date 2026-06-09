@@ -82,7 +82,7 @@ export default function PollSection() {
 
   return (
     <>
-      <section className="story-section" style={{ minHeight: '100vh', justifyContent: 'center', padding: '10vh 1.5rem' }}>
+      <section className="story-section" data-bgcolor="#F9FAFB" style={{ minHeight: '100vh', justifyContent: 'center', padding: '10vh 1.5rem', background: 'transparent' }}>
         <motion.div
           initial={{ opacity: 0, y: 36 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -370,6 +370,13 @@ function ModalContent({ modal, setModal }: { modal: 'security' | 'recognition', 
     setIsMounted(true);
   }, []);
 
+  // 모달(섹션)이 변경될 때마다 스크롤을 즉시 최상단으로 리셋
+  useEffect(() => {
+    if (modalScrollRef.current) {
+      modalScrollRef.current.scrollTop = 0;
+    }
+  }, [modal]);
+
   return (
           <motion.div
             key="worry-page"
@@ -381,7 +388,7 @@ function ModalContent({ modal, setModal }: { modal: 'security' | 'recognition', 
             style={{
               position: 'fixed', top: 0, left: 0,
               width: '100vw', height: '100vh',
-              background: '#ffffff',
+              background: 'linear-gradient(135deg, #F0F7FF 0%, #F5F3FF 50%, #FFF0F6 100%)',
               backgroundAttachment: 'fixed',
               zIndex: 9999,
               overflowY: 'auto',
@@ -392,7 +399,7 @@ function ModalContent({ modal, setModal }: { modal: 'security' | 'recognition', 
               position: 'sticky', top: 0, width: '100%',
               padding: '0.75rem 1rem', display: 'flex', alignItems: 'center',
               zIndex: 10000,
-              background: 'linear-gradient(to bottom, #ffffff 55%, rgba(255,255,255,0))',
+              background: 'linear-gradient(to bottom, rgba(245,243,255,0.9) 30%, rgba(245,243,255,0))',
             }}>
               <motion.button
                 onClick={() => setModal(null)}

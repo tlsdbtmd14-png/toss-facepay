@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate, useMotionValueEvent } from 'framer-motion';
 
 // ── 암호화 해시 문자열 생성기 ──────────────────────────────────────
 const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#$%&';
@@ -43,24 +43,23 @@ type Stage = 'idle' | 'capturing' | 'encrypting' | 'done';
 const HASH_STRING = '8f3K#mP9@xQ2$nL7!rY4&wZ6%bJ1*vD';
 
 // ── 3D 이미지 프로세스 다이어그램: 얼굴 → 메시 → 자물쇠 ──────────────
-const STEP_IMG = ['/enc-face2.png', '/enc-mesh2.png', '/enc-lock2.png'];
-const STEP_LABEL = ['얼굴 인식', '데이터 변환', '암호화 과정'];
+const STEP_IMG = ['/얼굴인식.png', '/데이터변환2.png', '/암호화과정.png'];
+const STEP_LABEL = ['얼굴 인식', '데이터 변환', '암호화 저장'];
 
 const stageIndex = (s: Stage) =>
   ({ idle: 0, capturing: 0, encrypting: 1, done: 2 } as Record<Stage, number>)[s];
 
-function ProcessDiagram({ stage }: { stage: Stage }) {
-  const cur = stageIndex(stage);
+function ProcessDiagram({ cur }: { cur: number }) {
   return (
-    <div style={{ position: 'relative', height: '224px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      {/* 하단 진행 점 */}
-      <div style={{ position: 'absolute', bottom: 0, display: 'flex', gap: '6px' }}>
+    <div style={{ position: 'relative', height: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      {/* 하단 진행 점 (크기 확대) */}
+      <div style={{ position: 'absolute', bottom: 0, display: 'flex', gap: '8px' }}>
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
-            animate={{ width: i === cur ? 22 : 6, background: i <= cur ? '#3182F6' : '#D6E4F5' }}
+            animate={{ width: i === cur ? 30 : 8, background: i <= cur ? '#3182F6' : '#D6E4F5' }}
             transition={{ duration: 0.3 }}
-            style={{ height: 6, borderRadius: '100px' }}
+            style={{ height: 8, borderRadius: '100px' }}
           />
         ))}
       </div>
@@ -68,13 +67,13 @@ function ProcessDiagram({ stage }: { stage: Stage }) {
       <AnimatePresence mode="wait">
         <motion.div
           key={cur}
-          initial={{ opacity: 0, scale: 0.82, y: 16 }}
+          initial={{ opacity: 0, scale: 0.82, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.82, y: -16 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.7rem' }}
+          exit={{ opacity: 0, scale: 0.82, y: -20 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}
         >
-          <div style={{ position: 'relative', width: '172px', height: '172px' }}>
+          <div style={{ position: 'relative', width: '480px', height: '480px' }}>
             {/* 글로우 */}
             <motion.div
               animate={{ opacity: [0.35, 0.65, 0.35], scale: [0.9, 1.06, 0.9] }}
@@ -82,28 +81,37 @@ function ProcessDiagram({ stage }: { stage: Stage }) {
               style={{
                 position: 'absolute', inset: '8%', borderRadius: '50%',
                 background: 'radial-gradient(circle, rgba(49,130,246,0.4) 0%, rgba(49,130,246,0) 70%)',
-                filter: 'blur(8px)', zIndex: 0,
+                filter: 'blur(16px)', zIndex: 0,
               }}
             />
             {/* 이미지 (부유) */}
-            <motion.img
-              src={STEP_IMG[cur]}
-              alt={STEP_LABEL[cur]}
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
-              style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', objectFit: 'contain' }}
-            />
+            <div style={{
+               position: 'relative', zIndex: 1, width: '100%', height: '100%',
+               display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}>
+              <motion.img
+                src={STEP_IMG[cur]}
+                alt={STEP_LABEL[cur]}
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  width: cur === 1 ? '160%' : '100%',
+                  height: cur === 1 ? '160%' : '100%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
           </div>
 
           {/* STEP 라벨 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <span style={{
               background: '#3182F6', color: '#FFFFFF', fontWeight: 800,
-              fontSize: '0.68rem', padding: '3px 9px', borderRadius: '100px', letterSpacing: '0.3px',
+              fontSize: '1rem', padding: '4px 14px', borderRadius: '100px', letterSpacing: '0.5px',
             }}>
               STEP {cur + 1}
             </span>
-            <span style={{ color: '#191F28', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.5px' }}>
+            <span style={{ color: '#191F28', fontWeight: 800, fontSize: '1.6rem', letterSpacing: '-0.5px' }}>
               {STEP_LABEL[cur]}
             </span>
           </div>
@@ -113,151 +121,122 @@ function ProcessDiagram({ stage }: { stage: Stage }) {
   );
 }
 
-function EncryptionVisualizer() {
-  const [stage, setStage] = useState<Stage>('idle');
-  const [hash] = useState(HASH_STRING);
-  const [dots, setDots] = useState('');
+function EncryptionVisualizer({ scrollContainer }: { scrollContainer?: React.RefObject<HTMLElement> }) {
+  const localRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: localRef,
+    container: scrollContainer,
+    offset: ['start center', 'end center']
+  });
 
-  const runSequence = () => {
-    if (stage !== 'idle' && stage !== 'done') return;
-    setStage('capturing');
-    const t1 = setTimeout(() => setStage('encrypting'), 2400);
-    const t2 = setTimeout(() => setStage('done'), 4800);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
-  };
+  const [cur, setCur] = useState(-1); // -1 means nothing visible yet
 
-  // 로딩 점 애니메이션
-  useEffect(() => {
-    if (stage !== 'encrypting') return;
-    let i = 0;
-    const id = setInterval(() => { setDots('.'.repeat((i++ % 3) + 1)); }, 400);
-    return () => clearInterval(id);
-  }, [stage]);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest < 0.1) setCur(-1);
+    else if (latest < 0.4) setCur(0);
+    else if (latest < 0.7) setCur(1);
+    else setCur(2);
+  });
 
-  // 자동 시작
-  useEffect(() => { runSequence(); }, []);
+  // Clamp cur for the ProcessDiagram which expects 0, 1, or 2
+  const diagramCur = cur < 0 ? 0 : cur;
 
   return (
-    <div style={{ width: '100%', maxWidth: '480px', margin: '0 auto' }}>
-      {/* 파이프라인 헤더 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', justifyContent: 'center' }}>
-        {(['capturing', 'encrypting', 'done'] as Stage[]).map((s, i) => {
-          const order = ({ idle: -1, capturing: 0, encrypting: 1, done: 2 } as Record<Stage, number>)[stage];
-          // 지나간 단계 또는 마지막 완료 단계 → 체크 표시 (3번도 완료 시 체크)
-          const checked = order > i || (i === 2 && stage === 'done');
-          const active = order === i && !checked;
-          return (
-            <div key={s} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{
-                width: 28, height: 28, borderRadius: '50%',
-                background: checked ? '#22c55e' : active ? '#3182f6' : '#E5E8EB',
-                border: `2px solid ${checked ? '#22c55e' : active ? '#60a5fa' : '#E5E8EB'}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '0.7rem', fontWeight: 800, color: checked || active ? 'white' : '#ADB5BD',
-                transition: 'all 0.4s',
-                boxShadow: active ? '0 0 12px rgba(49,130,246,0.5)' : 'none',
-              }}>
-                {checked ? '✓' : i + 1}
-              </div>
-              {i < 2 && (
-                <div style={{
-                  width: 32, height: 2,
-                  background: checked ? '#22c55e' : '#E5E8EB',
-                  transition: 'background 0.5s',
-                  borderRadius: 2,
-                }} />
-              )}
+    <div ref={localRef} style={{ height: '300vh', position: 'relative' }}>
+      
+      {/* Sticky Container */}
+      <div style={{ position: 'sticky', top: '20vh', width: '95%', maxWidth: '1100px', margin: '0 auto' }}>
+        
+        {/* 자연스러운 플로팅 레이아웃 (대시보드 제거) */}
+        <div style={{
+          display: 'flex',
+          gap: '5rem',
+          alignItems: 'center',
+          position: 'relative'
+        }}>
+
+          {/* 좌측: 스크롤 텔링 텍스트 패널 */}
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            paddingRight: '2rem'
+          }}>
+
+            {/* 3단계 프로세스 텍스트 (색상 변경 없이 부드럽게 떠오르는 애니메이션) */}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.65)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              borderRadius: '32px',
+              padding: '3.5rem 3rem',
+              border: '1px solid rgba(255, 255, 255, 0.8)',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.06)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: '2.5rem',
+            }}>
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: cur >= 0 ? 1 : 0, y: cur >= 0 ? 0 : 40 }}
+                transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                style={{
+                  fontSize: '1.8rem',
+                  fontWeight: 700,
+                  color: '#191F28',
+                  lineHeight: 1.5,
+                  wordBreak: 'keep-all',
+                }}
+              >
+                최초 얼굴 등록 시, 얼굴의 특징점과 선을 수치화하고
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: cur >= 1 ? 1 : 0, y: cur >= 1 ? 0 : 40 }}
+                transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                style={{
+                  fontSize: '1.8rem',
+                  fontWeight: 700,
+                  color: '#191F28',
+                  lineHeight: 1.5,
+                  wordBreak: 'keep-all',
+                }}
+              >
+                암호화된 데이터로 변환하여 인터넷이 연결되지 않은 안전한 토스 서버에만 저장됩니다.
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: cur >= 2 ? 1 : 0, y: cur >= 2 ? 0 : 40 }}
+                transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                style={{
+                  fontSize: '1.8rem',
+                  fontWeight: 700,
+                  color: '#191F28',
+                  lineHeight: 1.5,
+                  wordBreak: 'keep-all',
+                }}
+              >
+                결제 매장의 단말기나 서버에는 고객의 얼굴 정보가 절대 남지 않습니다.
+              </motion.div>
             </div>
-          );
-        })}
-      </div>
+            
+          </div>
 
-      {/* 메인 카드 */}
-      <div style={{
-        background: '#FFFFFF',
-        border: '1px solid #EEF0F3',
-        borderRadius: '20px',
-        padding: '1.25rem 1.25rem 1.5rem',
-        position: 'relative',
-        overflow: 'hidden',
-        boxShadow: '0 12px 32px rgba(0,0,0,0.06)',
-      }}>
-        {/* 3D 프로세스 다이어그램 */}
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <ProcessDiagram stage={stage} />
+          {/* 우측: 3D 비주얼 패널 (거대한 이미지) */}
+          <div style={{
+            flex: 1.2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative'
+          }}>
+            <ProcessDiagram cur={diagramCur} />
+          </div>
         </div>
-
-        {/* 상태 텍스트 */}
-        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginTop: '0.75rem' }}>
-          <AnimatePresence mode="wait">
-            {(stage === 'idle' || stage === 'capturing') && (
-              <motion.div key="cap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                style={{ color: '#3182F6', fontWeight: 700, fontSize: '0.9rem' }}>
-                얼굴을 인식하고 있어요
-              </motion.div>
-            )}
-            {stage === 'encrypting' && (
-              <motion.div key="enc" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <div style={{ color: '#D97706', fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.6rem' }}>
-                  얼굴을 고유한 숫자로 변환·암호화 중{dots}
-                </div>
-                <div style={{
-                  fontFamily: 'ui-monospace, monospace', fontSize: '0.72rem',
-                  color: '#3182F6', letterSpacing: '1px',
-                  wordBreak: 'break-all', padding: '0.5rem',
-                  background: '#EBF5FF', borderRadius: '8px',
-                }}>
-                  <ScrambleText text={hash} running={true} />
-                </div>
-              </motion.div>
-            )}
-            {stage === 'done' && (
-              <motion.div key="done" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                <div style={{ color: '#16A34A', fontWeight: 800, fontSize: '0.92rem', marginBottom: '0.6rem' }}>
-                  암호화 완료 — 원본은 즉시 삭제됩니다
-                </div>
-                <div style={{
-                  fontFamily: 'ui-monospace, monospace', fontSize: '0.7rem',
-                  color: '#8B95A1', letterSpacing: '1px',
-                  wordBreak: 'break-all', padding: '0.5rem',
-                  background: '#F2F4F6', borderRadius: '8px', marginBottom: '0.6rem',
-                }}>
-                  {hash}
-                </div>
-                <div style={{
-                  background: '#FEF2F2', border: '1px solid #FECACA',
-                  borderRadius: '10px', padding: '0.55rem 0.85rem',
-                  color: '#DC2626', fontSize: '0.75rem', fontWeight: 600,
-                }}>
-                  😈 해커가 이걸 훔쳐가도... 얼굴로 되돌릴 수 없습니다
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* 다시 실행 버튼 */}
-      <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-        <motion.button
-          className="enc-replay"
-          onClick={runSequence}
-          disabled={stage !== 'idle' && stage !== 'done'}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
-          style={{
-            background: '#F2F4F6',
-            border: 'none',
-            color: '#4E5968',
-            padding: '0.55rem 1.5rem',
-            borderRadius: '100px',
-            cursor: stage === 'done' || stage === 'idle' ? 'pointer' : 'not-allowed',
-            fontSize: '0.8rem',
-            fontWeight: 700,
-          }}
-        >
-          {stage === 'done' || stage === 'idle' ? '↩ 다시 보기' : '처리 중...'}
-        </motion.button>
       </div>
     </div>
   );
@@ -266,182 +245,302 @@ function EncryptionVisualizer() {
 // ── 보안 레이어 카드 ──────────────────────────────────────────────
 const LAYERS = [
   {
-    icon: '📱',
+    iconBefore: '🔓',
+    iconAfter: '🔒',
     color: '#3182f6',
-    title: '기기 안에서만 처리',
-    sub: 'Secure Enclave',
-    desc: '얼굴 인식은 100% 기기 내부 보안칩에서만 처리됩니다. 원본 데이터가 외부 서버로 전송되는 일은 없습니다.',
+    title: '유출되어도 원본을 알 수 없습니다',
+    sub: '강력한 암호화',
+    desc: '토스페이먼츠는 금융회사 수준의 철저한 보안 체계를 갖추고 있습니다. 만에 하나 정보가 유출되더라도, 얼굴 데이터 자체는 고도로 암호화되어 분산 저장되므로 복호화 키 없이는 원문 정보의 형태를 절대 알아낼 수 없습니다.',
   },
   {
-    icon: '🔢',
+    iconBefore: '👤',
+    iconAfter: '🎭',
     color: '#8b5cf6',
-    title: '단방향 수학 암호화',
-    sub: 'One-way Hash',
-    desc: '얼굴 → 숫자로만 변환됩니다. 수학적으로 역산이 불가능해 해시값만으로는 얼굴을 복원할 수 없습니다.',
+    title: '알아내더라도 결제할 수 없습니다',
+    sub: '라이브니스(Liveness) 기술',
+    desc: '암호화된 데이터를 기적적으로 복호화하여 알아내더라도, 그 정보를 결제에 쓸 수는 없습니다. 정보를 프린트해서 단말기에 대더라도 결제가 되지 않습니다. 사진이나 영상과 같은 2D 평면 데이터로는 절대 뚫을 수 없는 최첨단 라이브니스 기술이 적용되어 있기 때문입니다.',
   },
   {
-    icon: '🗑️',
+    iconBefore: '📄',
+    iconAfter: '🔒',
     color: '#22c55e',
-    title: '원본 즉시 삭제',
-    sub: 'Zero Retention',
-    desc: '캡처된 얼굴 이미지는 암호화 직후 기기에서 완전히 삭제됩니다. 저장되는 건 해시 코드뿐입니다.',
+    title: '해지 즉시 결제 중지, 데이터는 안전하게 분리 보관',
+    sub: '안전한 정보 관리 및 폐기',
+    desc: '토스 앱에서 언제든 얼굴결제 서비스를 해지할 수 있으며, 해지 즉시 실시간 결제 기능은 완전히 중지됩니다. 단, 혹시 모를 명의도용이나 금융 사고를 방지하기 위해 얼굴 정보는 결제망과 완전히 격리된 채 1년간 안전하게 분리 보관된 후 흔적 없이 최종 폐기됩니다.',
   },
 ];
 
 
 
-// ── 보안 레이어 풀스크린 슬레이트 컴포넌트 ──────────────────────────────────────────────
-function SecuritySlate({ layer, index, scrollYProgress }: any) {
-  // 스크롤 구간 계산 (0.2 ~ 0.4 / 0.45 ~ 0.65 / 0.7 ~ 0.9)
-  const start = 0.20 + index * 0.25;
-  const end = start + 0.2;
+// ── 보안 레이어 카드 컴포넌트 (Apple 스타일 역동적 스크롤 텔링) ──────────────────────────────────────────────
+function AppleSecurityCard({ layer, index, containerRef }: { layer: any, index: number, containerRef?: React.RefObject<HTMLElement> }) {
+  const targetRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    container: containerRef, // 전역 스크롤 컨테이너를 지정해야 스크롤이 감지됨
+    offset: ['start start', 'end end'],
+  });
 
-  // 좌측(-90) 우측(90) 좌측(-90) 교차
-  const startAngle = index % 2 === 0 ? -90 : 90;
-  const origin = index % 2 === 0 ? 'top left' : 'top right';
+  const [phase, setPhase] = useState(0);
 
-  const rotate = useTransform(scrollYProgress, [start, end], [startAngle, 0]);
+  // 스크롤 진행도에 따라 페이즈 변경 (더 빨리 반응하도록 임계값 낮춤)
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest > 0.4) setPhase(2);       // 텍스트 등장
+    else if (latest > 0.15) setPhase(1); // 이모지 변신
+    else setPhase(0);                    // 초기 상태
+  });
 
-  // 대기 중일 때 그림자 숨김 처리 (Bleeding 방지)
-  const shadowOpacity = useTransform(scrollYProgress, [start, start + 0.05], [0, 0.2]);
-  const boxShadow = useMotionTemplate`-10px 10px 40px rgba(0,0,0,${shadowOpacity})`;
+  // 역동적인 애니메이션 설정 (Variants)
+  const emojiBeforeVariants = {
+    visible: { scale: 1, opacity: 1, rotate: 0, filter: 'blur(0px)' },
+    hidden: { scale: 0.5, opacity: 0, rotate: -20, filter: 'blur(10px)', transition: { duration: 0.3 } }
+  };
+  
+  const emojiAfterVariants = {
+    hidden: { scale: 0.2, opacity: 0, rotate: 30, filter: 'blur(10px)' },
+    visible: { scale: 1, opacity: 1, rotate: 0, filter: 'blur(0px)', transition: { type: 'spring', stiffness: 250, damping: 15, mass: 1.2 } }
+  };
 
-  // 배경은 각 액센트 컬러에 맞는 부드러운 톤
-  const bg = index === 0 ? '#EAF3FF' : index === 1 ? '#F3E8FF' : '#EBF9F1';
+  // 텍스트 이동 애니메이션 (타이틀 좌우, 설명 상하 이동)
+  const titleVariants = {
+    hidden: { opacity: 0, x: -100, filter: 'blur(10px)' },
+    visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { type: 'spring', stiffness: 100, damping: 20 } }
+  };
+
+  const badgeVariants = {
+    hidden: { opacity: 0, x: 100 },
+    visible: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 100, damping: 20 } }
+  };
+
+  const descVariants = {
+    hidden: { opacity: 0, y: 150, scale: 0.8, filter: 'blur(20px)' },
+    visible: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', transition: { type: 'spring', stiffness: 80, damping: 15, mass: 1 } }
+  };
 
   return (
-    <motion.div
+    <div
+      ref={targetRef}
       style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: bg,
-        transformOrigin: origin,
-        rotate,
-        zIndex: index + 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow,
-        overflow: 'hidden',
-        pointerEvents: useTransform(scrollYProgress, (v) => v >= end - 0.05 ? 'auto' : 'none'),
+        width: '100%',
+        height: '300vh', // 스텝 간격을 대폭 넓힘
+        backgroundColor: 'transparent',
+        position: 'relative',
+        marginBottom: '50vh', // 스텝과 스텝 사이의 완전한 공백 추가
       }}
     >
       <div style={{
-        position: 'absolute', top: '-10vh', [origin.includes('left') ? 'right' : 'left']: '-10vw',
-        width: '60vw', height: '60vw', borderRadius: '50%',
-        background: `radial-gradient(circle, ${layer.color}15 0%, transparent 70%)`,
-        pointerEvents: 'none'
-      }} />
+        position: 'sticky', top: 0, height: '100vh', width: '100%',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        overflow: 'hidden'
+      }}>
+        {/* 아주 옅은 배경 그라데이션 원 */}
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+          width: '50vw', height: '50vw', borderRadius: '50%',
+          background: `radial-gradient(circle, ${layer.color}08 0%, transparent 60%)`,
+          pointerEvents: 'none', zIndex: 0
+        }} />
 
-      <div style={{ width: '100%', maxWidth: '1000px', padding: '0 2rem', display: 'flex', gap: '4rem', alignItems: 'center' }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem' }}>
-            <span style={{ background: layer.color, color: '#fff', fontWeight: 800, fontSize: '0.9rem', padding: '6px 16px', borderRadius: '100px' }}>
-              STEP {index + 1}
-            </span>
-            <span style={{ color: layer.color, fontSize: '1rem', fontWeight: 800, letterSpacing: '0.5px' }}>
-              {layer.sub}
-            </span>
+        <motion.div 
+          animate={{ y: phase === 2 ? -40 : 0 }} // 텍스트 등장 시 전체가 위로 살짝 올라가는 모션
+          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+          style={{ width: '100%', maxWidth: '800px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '3rem', position: 'relative', zIndex: 1, padding: '0 2rem' }}
+        >
+          
+          {/* 타이틀 영역 (좌우에서 이동해 옴) */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <motion.div 
+              variants={badgeVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.5 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem' }}
+            >
+              <span style={{ background: layer.color, color: '#fff', fontWeight: 800, fontSize: '0.9rem', padding: '6px 16px', borderRadius: '100px' }}>
+                STEP {index + 1}
+              </span>
+              <span style={{ color: layer.color, fontSize: '1rem', fontWeight: 800, letterSpacing: '0.5px' }}>
+                {layer.sub}
+              </span>
+            </motion.div>
+            
+            <motion.h2 
+              variants={titleVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.5 }}
+              style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, color: '#191F28', lineHeight: 1.25, letterSpacing: '-2px', margin: 0 }}
+            >
+              {layer.title}
+            </motion.h2>
           </div>
-          <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, color: '#191F28', lineHeight: 1.25, letterSpacing: '-2px', margin: '0 0 1.5rem 0' }}>
-            {layer.title}
-          </h2>
-          <p style={{ color: '#4E5968', fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', lineHeight: 1.6, margin: 0 }}>
-            {layer.desc}
-          </p>
-        </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-          <div style={{ fontSize: '8rem', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.1))' }}>
-            {layer.icon}
+          {/* 중앙 이모지 애니메이션 영역 (매우 역동적) */}
+          <div style={{ position: 'relative', width: '200px', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <motion.div 
+              variants={emojiBeforeVariants}
+              initial="visible"
+              animate={phase >= 1 ? "hidden" : "visible"}
+              style={{ position: 'absolute', fontSize: '10rem', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.05))' }}
+            >
+              {layer.iconBefore}
+            </motion.div>
+            
+            <motion.div 
+              variants={emojiAfterVariants}
+              initial="hidden"
+              animate={phase >= 1 ? "visible" : "hidden"}
+              style={{ position: 'absolute', fontSize: '10rem', filter: 'drop-shadow(0 30px 40px rgba(0,0,0,0.15))' }}
+            >
+              {layer.iconAfter}
+            </motion.div>
           </div>
-        </div>
+
+          {/* 텍스트 영역 (부드러운 글래스모피즘 & 포인트 컬러 배경 박스) */}
+          <motion.div 
+            variants={descVariants}
+            initial="hidden"
+            animate={phase === 2 ? "visible" : "hidden"}
+            style={{ 
+              maxWidth: '640px',
+              backgroundColor: `${layer.color}08`, // 매우 연한 포인트 컬러 배경
+              border: `1px solid ${layer.color}15`, // 은은한 포인트 컬러 테두리
+              padding: '2rem 2.5rem',
+              borderRadius: '24px',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.01)',
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            <p style={{ color: '#333D4B', fontSize: 'clamp(1.1rem, 2vw, 1.35rem)', lineHeight: 1.65, margin: 0, wordBreak: 'keep-all', fontWeight: 600, letterSpacing: '-0.3px' }}>
+              {layer.desc}
+            </p>
+          </motion.div>
+
+        </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 // ── 메인 컴포넌트 ────────────────────────────────────────────────
 export default function SecurityConcernSection({ containerRef }: { containerRef?: React.RefObject<HTMLElement> } = {}) {
-  const scrollContainerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: scrollContainerRef,
-    container: containerRef,
-    offset: ['start start', 'end end'],
-  });
-
   return (
     <div style={{ width: '100%', padding: '2rem 0' }}>
-      <div style={{ maxWidth: '560px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem' }}>
+      <div style={{ maxWidth: '560px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
         {/* 제목 */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          style={{ textAlign: 'center' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          style={{ textAlign: 'center', marginBottom: '4rem' }}
         >
           <h2 style={{
             color: '#191F28', fontWeight: 900,
-            fontSize: 'clamp(1.7rem, 5vw, 2.6rem)',
-            margin: 0, letterSpacing: '-1px', lineHeight: 1.2,
+            fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+            margin: 0, letterSpacing: '-2px', lineHeight: 1.25,
           }}>
-            내 얼굴 데이터가<br />유출되면 어쩌죠?
+            안심하세요,<br />
+            <span style={{ color: '#3182F6' }}>절대 유출되지 않아요</span>
           </h2>
-          <p style={{ color: '#6B7684', marginTop: '0.75rem', fontSize: '0.9rem', lineHeight: 1.6 }}>
-            실제로 어떻게 처리되는지 직접 보여드릴게요
+          <p style={{ color: '#6B7684', marginTop: '1.2rem', fontSize: '1.2rem', lineHeight: 1.6, fontWeight: 500, letterSpacing: '-0.3px' }}>
+            당신의 얼굴 정보가 어떻게 안전하게 지켜지는지<br />3D 시뮬레이션으로 투명하게 보여드릴게요.
           </p>
         </motion.div>
-
-        {/* 암호화 시각화 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          style={{ width: '100%' }}
-        >
-          <EncryptionVisualizer />
-        </motion.div>
-
       </div>
 
-      {/* 3단계 보안 구조 카드 — 풀스크린 슬레이트 애니메이션 적용 */}
-      <section 
-        ref={scrollContainerRef}
-        style={{ height: '500vh', position: 'relative', width: '100%', margin: '50vh 0', display: 'block' }}
+      {/* 암호화 시각화 (넓은 레이아웃을 위해 560px 제한 박스 밖으로 뺌) */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: 0.1 }}
+        style={{ width: '100%', marginTop: '3rem' }}
       >
-        <div style={{ position: 'sticky', top: 0, height: '100vh', width: '100%', overflow: 'hidden', background: 'transparent' }}>
-          
-          {/* 뒷배경 텍스트 */}
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
-            <div style={{ display: 'inline-block', background: '#EEF0F3', color: '#4E5968', padding: '0.5rem 1.5rem', borderRadius: '100px', fontSize: '1.1rem', fontWeight: 800, marginBottom: '2rem' }}>
-              🔒 철저한 3단계 보안
-            </div>
-            <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontWeight: 900, color: '#191F28', letterSpacing: '-2px', margin: 0, textAlign: 'center' }}>
-              안심하세요, <br /><span style={{ color: '#3182F6' }}>절대 유출되지 않아요</span>
-            </h1>
-            <motion.div
-               animate={{ y: [0, 10, 0] }}
-               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-               style={{ marginTop: '4rem', color: '#ADB5BD', fontSize: '2rem' }}
-            >
-              ↓
-            </motion.div>
-          </div>
+        <EncryptionVisualizer scrollContainer={containerRef} />
+      </motion.div>
 
-          {/* 떨어지는 슬레이트들 */}
-          {LAYERS.map((layer, i) => (
-            <SecuritySlate key={i} layer={layer} index={i} scrollYProgress={scrollYProgress} />
-          ))}
+      {/* 3단계 보안 구조 카드 (스크롤 반응형 레이아웃) */}
+      <div style={{ width: '100%', margin: '15rem 0 5rem 0', display: 'flex', flexDirection: 'column' }}>
+        {/* 타이틀과 첫 번째 스텝 사이의 간격을 압도적으로 넓힘 (기존 6rem -> 40vh) */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginBottom: '40vh', padding: '0 2rem' }}>
+          <div style={{ display: 'inline-block', background: '#EEF0F3', color: '#4E5968', padding: '0.5rem 1.5rem', borderRadius: '100px', fontSize: '1.1rem', fontWeight: 800, marginBottom: '2rem' }}>
+            🔒 철저한 3단계 보안
+          </div>
+          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: 900, color: '#191F28', letterSpacing: '-2px', margin: 0, textAlign: 'center', lineHeight: 1.2 }}>
+            가짜 얼굴부터 의심스러운 거래까지, <br /><span style={{ color: '#3182F6' }}>3중 방어막으로 완벽하게 차단합니다</span>
+          </h1>
         </div>
-      </section>
+
+        {LAYERS.map((layer, i) => (
+          <AppleSecurityCard key={i} layer={layer} index={i} containerRef={containerRef} />
+        ))}
+      </div>
+
+      {/* 보안 안심 Q&A 섹션 */}
+      <SecurityQASection />
 
       {/* 하단 신뢰 지표 — 트로피 + 폭죽 이미지 */}
       <TrophySection />
 
+    </div>
+  );
+}
+
+// ── 보안 Q&A 섹션 ───────────────────────────────────────────────
+function SecurityQASection() {
+  return (
+    <div style={{ width: '100%', maxWidth: '960px', margin: '15rem auto 8rem', padding: '0 2rem' }}>
+      <motion.h3 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 900, color: '#191F28', marginBottom: '4rem', textAlign: 'center', letterSpacing: '-1px' }}
+      >
+        가장 많이 묻는 질문들
+      </motion.h3>
+      
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+        
+        {/* Q1 */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
+          style={{ background: '#FFFFFF', border: '1px solid #F2F4F6', borderRadius: '32px', padding: '3rem', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '1.5rem', transition: 'all 0.3s ease' }}
+        >
+          <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#3182F6', lineHeight: 1 }}>Q.</div>
+          <h4 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#191F28', margin: 0, lineHeight: 1.4, wordBreak: 'keep-all' }}>
+            만약 해킹으로 내 얼굴 데이터가 유출되면 어떡하죠?
+          </h4>
+          <p style={{ fontSize: '1.1rem', color: '#4E5968', lineHeight: 1.6, margin: 0, wordBreak: 'keep-all', fontWeight: 500 }}>
+            토스페이먼츠는 <strong>금융회사 수준의 강력한 보안 체계</strong>를 갖추고 있습니다. 만에 하나 데이터가 유출되더라도, 모든 정보는 고도로 암호화되어 있어 복호화 키 없이는 원본 얼굴 형태를 절대 알아낼 수 없습니다.
+          </p>
+        </motion.div>
+
+        {/* Q2 */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.15 }}
+          whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
+          style={{ background: '#FFFFFF', border: '1px solid #F2F4F6', borderRadius: '32px', padding: '3rem', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '1.5rem', transition: 'all 0.3s ease' }}
+        >
+          <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#3182F6', lineHeight: 1 }}>Q.</div>
+          <h4 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#191F28', margin: 0, lineHeight: 1.4, wordBreak: 'keep-all' }}>
+            내 사진을 훔치거나 유출된 데이터로 남이 결제하면요?
+          </h4>
+          <p style={{ fontSize: '1.1rem', color: '#4E5968', lineHeight: 1.6, margin: 0, wordBreak: 'keep-all', fontWeight: 500 }}>
+            암호화된 데이터를 어떻게든 알아내어 사진으로 프린트하더라도 결제에 사용할 수 없습니다. 결제 단말기에는 실제 사람의 입체적인 얼굴인지 완벽하게 걸러내는 <strong>라이브니스(Liveness) 기술</strong>이 적용되어 있기 때문입니다.
+          </p>
+        </motion.div>
+
+      </div>
     </div>
   );
 }
@@ -524,6 +623,23 @@ function TrophySection() {
       {/* 폭죽 파티클 */}
       <ConfettiBurst trigger={burst} />
 
+      {/* 후광 효과 (Glow) */}
+      <motion.div
+        animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.9, 1.1, 0.9] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '300px',
+          height: '300px',
+          background: 'radial-gradient(circle, rgba(34,197,94,0.3) 0%, rgba(34,197,94,0) 70%)',
+          filter: 'blur(30px)',
+          zIndex: 0,
+        }}
+      />
+
       {/* 트로피 */}
       <motion.img
         src="/image 30.png"
@@ -537,16 +653,16 @@ function TrophySection() {
 
       {/* 텍스트 */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.7, delay: 0.3 }}
-        style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}
+        transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+        style={{ textAlign: 'center', position: 'relative', zIndex: 1, marginTop: '1rem' }}
       >
-        <div style={{ color: '#16A34A', fontWeight: 900, fontSize: '1.6rem', letterSpacing: '-0.5px', lineHeight: 1.3 }}>
+        <div style={{ color: '#16A34A', fontWeight: 900, fontSize: '2rem', letterSpacing: '-1px', lineHeight: 1.3 }}>
           서비스 출시 이후<br />단 0건의 데이터 유출
         </div>
-        <div style={{ color: '#6B7684', fontSize: '0.9rem', marginTop: '0.6rem', lineHeight: 1.6 }}>
+        <div style={{ color: '#6B7684', fontSize: '1.1rem', marginTop: '1rem', lineHeight: 1.6, fontWeight: 500 }}>
           금융보안원 인증 · ISO 27001 취득 · 오인식률 1/100만
         </div>
       </motion.div>

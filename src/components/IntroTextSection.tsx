@@ -76,6 +76,7 @@ export default function IntroTextSection() {
   return (
     <section
       ref={sectionRef}
+      data-bgcolor="#FFFFFF"
       style={{
         position: 'relative',
         height: '100vh',

@@ -147,26 +147,30 @@ section {
 
 .device-frame-container {
   position: relative;
-  width: 95%;
-  max-width: 360px;
+  width: 100%;
+  max-width: 600px;
   display: inline-block;
   filter: drop-shadow(0 30px 60px rgba(0,0,0,0.1));
 }
 
 .device-frame-image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  aspect-ratio: 360 / 560;
+  object-fit: cover;
+  object-position: center;
   display: block;
+  border-radius: 40px; /* 좀 더 둥글게 */
 }
 
 /* 실제 기기 이미지의 화면 영역에 맞춘 절대 위치 */
 .device-screen-area {
   position: absolute;
-  top: 7.6%;
-  left: 10%;
-  width: 76.4%;
-  height: 68.1%;
-  border-radius: 12px;
+  top: 13.5%;
+  left: 24.5%;
+  width: 52%;
+  height: 55.5%;
+  border-radius: 24px;
   overflow: hidden;
   background: white; 
   display: flex;

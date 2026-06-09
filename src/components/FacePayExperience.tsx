@@ -88,7 +88,7 @@ export default function FacePayExperience() {
   }, []);
 
   return (
-    <section id="face-pay-experience-section" className="face-pay-section">
+    <section id="face-pay-experience-section" className="face-pay-section" data-bgcolor="#EBF5FF" style={{ background: 'transparent', padding: '10vh 0', margin: 0 }}>
       <motion.div
         className="device-frame-wrapper"
         initial={{ opacity: 0, y: 50 }}
@@ -147,7 +147,7 @@ export default function FacePayExperience() {
 
           {/* 중앙 패널: 단말기 */}
           <div className="device-frame-container" style={{ zIndex: 10 }}>
-            <img src="/terminal-device-cropped.png" alt="Terminal Device" className="device-frame-image" />
+            <img src="/토스단말기.png" alt="Terminal Device" className="device-frame-image" />
             <div className="device-screen-area">
               <AnimatePresence mode="wait">
                 {step === 'idle' && (

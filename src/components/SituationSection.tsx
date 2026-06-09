@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 // Step 0: 오늘 점심 (인트로)
 // ─────────────────────────────────────────────
 function IntroVisual() {
-  const friends = ['👩', '👨', '👩‍🦱', '🤩'];
+  const friends = ['👩', '👨', '👩‍🦱'];
   return (
     <div style={{ textAlign: 'center', padding: '1rem 0' }}>
       <motion.div
@@ -53,9 +53,8 @@ function FoodVisual() {
   const foods = [
     { emoji: '🥩', label: '삼겹살' },
     { emoji: '🍚', label: '공기밥' },
-    { emoji: '🥗', label: '쌈채소' },
     { emoji: '🍜', label: '냉면' },
-    { emoji: '🍺', label: '음료' },
+    { emoji: '🥤', label: '콜라' },
   ];
   return (
     <div>
@@ -98,10 +97,10 @@ function FoodVisual() {
 // ─────────────────────────────────────────────
 function ReceiptVisual() {
   const items = [
-    { name: '삼겹살 3인분', price: '45,000원' },
-    { name: '냉면 1개', price: '10,000원' },
+    { name: '삼겹살 4인분', price: '60,000원' },
+    { name: '물냉면 2개', price: '16,000원' },
     { name: '공기밥 4개', price: '4,000원' },
-    { name: '음료', price: '16,000원' },
+    { name: '콜라 2개', price: '4,000원' },
   ];
   return (
     <motion.div
@@ -146,17 +145,16 @@ function ReceiptVisual() {
         transition={{ delay: 0.5 }}
         style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem 0 0', marginTop: '0.5rem', borderTop: '2px solid #191F28', fontWeight: 900, fontSize: '1rem', color: '#191F28' }}
       >
-        <span>합계</span><span>75,000원</span>
+        <span>합계</span><span>84,000원</span>
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.7, type: 'spring', bounce: 0.45 }}
-        style={{ marginTop: '1rem', background: '#EBF5FF', borderRadius: '12px', padding: '0.85rem', textAlign: 'center' }}
+        style={{ marginTop: '1rem', background: '#EBF5FF', borderRadius: '12px', padding: '1rem', textAlign: 'center' }}
       >
-        <div style={{ color: '#3182f6', fontWeight: 900, fontSize: '1.25rem' }}>1인당 18,750원</div>
-        <div style={{ color: '#94a3b8', fontSize: '0.75rem', marginTop: '0.2rem' }}>4명 균등 분배</div>
+        <div style={{ color: '#3182f6', fontWeight: 900, fontSize: '1.25rem' }}>1인당 21,000원</div>
       </motion.div>
     </motion.div>
   );
@@ -186,7 +184,6 @@ function FriendsVisual() {
               borderRadius: '18px',
               padding: '1.1rem 0.9rem',
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
               gap: '0.5rem',
               minWidth: '95px',
@@ -264,22 +261,31 @@ function ComparisonVisual() {
       ))}
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.8, type: 'spring', bounce: 0.4 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9, type: 'spring', bounce: 0.5 }}
         style={{
-          marginTop: '0.5rem',
-          background: '#EBF5FF',
-          border: '1px solid #CFE4FF',
-          borderRadius: '12px',
-          padding: '0.75rem 1rem',
-          textAlign: 'center',
-          color: '#3182F6',
-          fontWeight: 700,
-          fontSize: '0.9rem',
+          marginTop: '1.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.2rem'
         }}
       >
-        ⚡ 얼굴 인식이 현금보다 <strong style={{ color: '#1B64DA' }}>83배 빠릅니다</strong>
+        <span style={{ color: '#8B95A1', fontSize: '0.85rem', fontWeight: 600 }}>현금 결제 소요 시간 대비</span>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'baseline', 
+          gap: '0.4rem',
+          background: 'linear-gradient(135deg, #3182F6, #1B64DA)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          fontSize: '2rem',
+          fontWeight: 900,
+          letterSpacing: '-1px'
+        }}>
+          83배 <span style={{ fontSize: '1.3rem', fontWeight: 800 }}>더 빠릅니다</span>
+        </div>
       </motion.div>
     </div>
   );
@@ -290,75 +296,111 @@ function ComparisonVisual() {
 // ─────────────────────────────────────────────
 function SuccessVisual() {
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: 'spring', bounce: 0.6, delay: 0.08 }}
+        initial={{ scale: 0, rotate: -45 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: 'spring', bounce: 0.6, delay: 0.1 }}
         style={{
-          width: '86px', height: '86px',
-          background: 'linear-gradient(135deg,#22c55e,#16a34a)',
+          width: '72px', height: '72px',
+          background: '#3182F6',
           borderRadius: '50%',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: 'white',
           fontSize: '2.5rem',
-          margin: '0 auto 1.2rem',
-          boxShadow: '0 0 0 16px rgba(34,197,94,0.1), 0 14px 36px rgba(34,197,94,0.35)',
+          margin: '0 auto 1.5rem',
+          boxShadow: '0 8px 24px rgba(49,130,246,0.3)',
         }}
       >
-        ✅
+        ✓
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        style={{
-          background: '#F7F8FA',
-          border: '1px solid #EEF0F3',
-          borderRadius: '16px',
-          padding: '1rem 1.25rem',
-        }}
       >
-        <div style={{ color: '#191F28', fontWeight: 900, fontSize: '2rem', letterSpacing: '-1.5px', lineHeight: 1 }}>0.3초</div>
-        <div style={{ color: '#6B7684', fontSize: '0.85rem', marginTop: '0.25rem' }}>
-          친구들이 카드 꺼내기도 전에 완료
-        </div>
-        <div style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', marginTop: '0.9rem', paddingTop: '0.9rem', borderTop: '1px solid #EEF0F3' }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ color: '#3182F6', fontWeight: 800, fontSize: '1rem' }}>+188P</div>
-            <div style={{ color: '#ADB5BD', fontSize: '0.68rem', marginTop: '2px' }}>포인트 적립</div>
-          </div>
-          <div style={{ width: '1px', background: '#EEF0F3' }} />
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ color: '#15B76C', fontWeight: 800, fontSize: '1rem' }}>보안 인증 ✓</div>
-            <div style={{ color: '#ADB5BD', fontSize: '0.68rem', marginTop: '2px' }}>3D 얼굴 확인</div>
-          </div>
-        </div>
+        <div style={{ color: '#191F28', fontWeight: 800, fontSize: '1.3rem', marginBottom: '0.5rem' }}>결제 완료</div>
+        <div style={{ color: '#191F28', fontWeight: 900, fontSize: '2.8rem', letterSpacing: '-1.5px', lineHeight: 1 }}>21,000<span style={{ fontSize: '1.6rem', fontWeight: 700, marginLeft: '2px' }}>원</span></div>
+        <div style={{ color: '#6B7684', fontSize: '0.95rem', marginTop: '0.8rem', fontWeight: 500 }}>오늘도 행복 고깃집</div>
       </motion.div>
 
-      {/* 어디서든 활용 가능 */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.6, type: 'spring' }}
         style={{
-          marginTop: '1.5rem',
-          background: '#F0F7FF',
-          border: '1px solid #CFE4FF',
-          borderRadius: '14px',
-          padding: '1rem',
+          marginTop: '2.5rem',
+          background: '#F9FAFB',
+          border: '1px solid #EEF0F3',
+          borderRadius: '16px',
+          padding: '1.2rem',
+          width: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.5rem'
+          justifyContent: 'space-between',
+          alignItems: 'center'
         }}
       >
-        <div style={{ color: '#3182F6', fontSize: '0.85rem', fontWeight: 800 }}>
-          어디서든 얼굴 하나로
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+          <div style={{ width: '42px', height: '42px', background: '#E8F3FF', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
+            🪙
+          </div>
+          <div style={{ textAlign: 'left' }}>
+            <div style={{ color: '#4E5968', fontSize: '0.85rem', fontWeight: 600 }}>토스포인트 적립</div>
+            <div style={{ color: '#3182F6', fontSize: '1.1rem', fontWeight: 800 }}>+188원</div>
+          </div>
         </div>
-        <div style={{ color: '#4E5968', fontSize: '0.9rem', fontWeight: 600, textAlign: 'center', lineHeight: 1.4 }}>
-          식당뿐만 아니라 카페, 서점, 편의점 등<br/>어디서든 유용하게 활용할 수 있어요!
+        <div style={{ color: '#8B95A1', fontSize: '0.8rem', fontWeight: 600, background: '#EEF0F3', padding: '6px 10px', borderRadius: '8px' }}>
+          0.3초 결제
         </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// Step 6: 활용처 안내 (새로운 마지막 페이지)
+// ─────────────────────────────────────────────
+function UsageVisual() {
+  const places = [
+    { icon: '☕', name: '카페', desc: '커피 한 잔 살 때' },
+    { icon: '🏪', name: '편의점', desc: '가벼운 산책길에' },
+    { icon: '📚', name: '서점', desc: '책 한 권 고를 때' },
+  ];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+      {places.map((place, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: i * 0.15, type: 'spring', bounce: 0.4 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            background: '#F9FAFB',
+            padding: '1.2rem',
+            borderRadius: '16px',
+            border: '1px solid #F2F4F6'
+          }}
+        >
+          <div style={{ fontSize: '2.5rem', background: '#FFFFFF', borderRadius: '50%', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+            {place.icon}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <span style={{ color: '#191F28', fontWeight: 800, fontSize: '1.1rem' }}>{place.name}</span>
+            <span style={{ color: '#6B7684', fontSize: '0.85rem', marginTop: '2px' }}>{place.desc}</span>
+          </div>
+        </motion.div>
+      ))}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        style={{ textAlign: 'center', marginTop: '0.5rem', color: '#3182F6', fontWeight: 700, fontSize: '0.95rem' }}
+      >
+        이제 두 손 가볍게 외출하세요! 🏃‍♂️
       </motion.div>
     </div>
   );
@@ -372,8 +414,9 @@ const STEPS = [
   { scene: '🥩', title: '맛있게 먹었다!',   subtitle: '삼겹살, 냉면, 공기밥... 완벽한 한 끼', visual: <FoodVisual />,       cta: '다 먹었어요 →' },
   { scene: '🧾', title: '계산서가 왔다',    subtitle: '자, 이제 누가 어떻게 낼까?',         visual: <ReceiptVisual />,    cta: '결제해보자 →' },
   { scene: '💳', title: '친구들 반응',      subtitle: '다들 카드를 꺼내기 시작했다',         visual: <FriendsVisual />,    cta: '나는? →' },
-  { scene: '⚡', title: '결제 속도 비교',    subtitle: '방식마다 이렇게나 차이가 납니다',      visual: <ComparisonVisual />, cta: '얼굴로 결제하기 →' },
-  { scene: '✅', title: '결제 완료!',       subtitle: '카드 꺼내기도 전에 끝났어요',         visual: <SuccessVisual />,    cta: '궁금한 점 확인하기 →', isLast: true },
+  { scene: '😎', title: '나는 지갑 없이 얼굴로!', subtitle: '카드 찾는 시간에 이미 결제 완료',      visual: <ComparisonVisual />, cta: '결제 완료 화면 보기 →' },
+  { scene: '✅', title: '결제 완료!',       subtitle: '현금/카드보다 압도적으로 편합니다',         visual: <SuccessVisual />,    cta: '어디서 쓸 수 있나요? →' },
+  { scene: '🌍', title: '어디서든 얼굴 하나로', subtitle: '식당은 물론 일상 곳곳에서',          visual: <UsageVisual />,      cta: '처음부터 다시보기 ↩', isLast: true },
 ] as const;
 
 const variants = {
@@ -394,7 +437,7 @@ export default function SituationSection() {
   const goNext = () => {
     const isLast = step === STEPS.length - 1;
     if (isLast) {
-      document.getElementById('choice-section')?.scrollIntoView({ behavior: 'smooth' });
+      go(0);
     } else {
       go(step + 1);
     }
@@ -406,7 +449,8 @@ export default function SituationSection() {
   return (
     <section
       className="story-section"
-      style={{ minHeight: '100vh', justifyContent: 'center', padding: '8vh 20px', margin: 0 }}
+      data-bgcolor="#F3F4F6"
+      style={{ minHeight: '100vh', justifyContent: 'center', padding: '8vh 20px', margin: 0, background: 'transparent' }}
     >
       {/* 스텝 진행 바 */}
       <div style={{ display: 'flex', gap: '6px', marginBottom: '2rem', zIndex: 10 }}>
@@ -528,29 +572,6 @@ export default function SituationSection() {
             }}
           >
             ← 이전
-          </motion.button>
-        )}
-
-        {/* 마지막 단계: 처음부터 보조 버튼 */}
-        {step === STEPS.length - 1 && (
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            onClick={() => go(0)}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            style={{
-              background: '#F2F4F6',
-              border: 'none',
-              color: '#4E5968',
-              padding: '0.72rem 1.4rem',
-              borderRadius: '100px',
-              cursor: 'pointer',
-              fontWeight: 600,
-              fontSize: '0.88rem',
-            }}
-          >
-            ↩ 다시보기
           </motion.button>
         )}
 
