@@ -39,11 +39,11 @@ export default function RecognitionConcernSection({ scrollContainerRef }: { scro
   const step3Scale = useTransform(scrollYProgress, [0, 0.9, 0.95, 1], [1.2, 1.2, 1, 1]);
 
   const images = [
-    '/uploaded_face_1.png', 
-    '/uploaded_face_2.png', // 모자
-    '/uploaded_face_3.png', // 안경
-    '/uploaded_face_4.png', // 화장 유무
-    '/uploaded_face_5.png', // 쌍둥이
+    '/new_기본버전.png', 
+    '/new_모자버전.png', // 모자
+    '/new_쌍둥이버전.png', // 쌍둥이 (매핑: images[2])
+    '/new_안경버전.png', // 안경 (매핑: images[3])
+    '/new_화장버전.png', // 화장 유무 (매핑: images[4])
   ];
 
   return (
@@ -153,7 +153,7 @@ function LivenessVisualizer({ scrollContainerRef }: { scrollContainerRef?: React
           </h1>
         </div>
 
-        <div style={{ display: 'flex', width: '100%', maxWidth: '1000px', padding: '0 2rem', gap: '4rem', alignItems: 'center' }}>
+        <div className="recognition-flex-container" style={{ display: 'flex', width: '100%', maxWidth: '1000px', padding: '0 2rem', gap: '4rem', alignItems: 'center' }}>
           
           {/* 좌측: 유저 (새로 업로드된 이미지로 깜빡임 구현) */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -177,7 +177,7 @@ function LivenessVisualizer({ scrollContainerRef }: { scrollContainerRef?: React
                 alt="Face Closed Eyes"
                 animate={{ opacity: [0, 0, 1, 0, 0] }} 
                 transition={{ duration: 3.5, repeat: Infinity, times: [0, 0.45, 0.5, 0.55, 1] }}
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', transform: 'scale(1.08)' }}
               />
             </div>
           </div>

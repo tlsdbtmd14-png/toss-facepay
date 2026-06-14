@@ -26,6 +26,7 @@ export default function EndPlaceholderSection() {
   return (
     <section
       className="story-section"
+      data-bgcolor="#FFFFFF"
       style={{
         minHeight: '100vh',
         justifyContent: 'center',

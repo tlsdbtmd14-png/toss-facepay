@@ -19,9 +19,9 @@ export default function DifferentiatorSection() {
   const xMove = useTransform(scrollYProgress, (v) => `calc(${v * -100}% + ${10 + (v * 90)}vw)`);
 
   return (
-    <div 
+    <section 
       ref={containerRef}
-      data-bgcolor="#E8F8EE"
+      data-bgcolor="#C4B5FD"
       style={{ height: '400vh', position: 'relative', width: '100%', background: 'transparent', margin: '0' }}
     >
       <div style={{
@@ -62,7 +62,7 @@ export default function DifferentiatorSection() {
                 </div>
               </div>
               {/* 우측 설명 텍스트 (위쪽에 딱 붙어서) */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', whiteSpace: 'normal', width: '550px', marginTop: '3vw', marginLeft: '2vw' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', whiteSpace: 'normal', width: '100%', maxWidth: '550px', marginTop: '3vw', marginLeft: '2vw' }}>
                 <p style={{ fontSize: '2.4rem', fontWeight: 800, color: '#111', wordBreak: 'keep-all', lineHeight: 1.4, margin: 0 }}>
                   토스가 자체 개발한<br/>얼굴인식 기술의 정확도입니다.
                 </p>
@@ -75,11 +75,11 @@ export default function DifferentiatorSection() {
             {/* 포인트 2: 속도 (Image 3 스타일 - 여전히 일을 하고 싶다 레퍼런스) */}
             <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0, position: 'relative', marginTop: '5vw' }}>
               <div style={{ fontSize: '7vw', fontWeight: 800, color: '#111', marginRight: '1vw', alignSelf: 'flex-end', marginBottom: '5vw', letterSpacing: '-0.05em' }}>단</div>
-              <div style={{ fontSize: '35vw', lineHeight: 0.75, fontWeight: 900, letterSpacing: '-0.05em', color: '#111' }}>1</div>
+              <div style={{ fontSize: '35vw', lineHeight: 0.75, fontWeight: 900, letterSpacing: '-0.05em' }}>1</div>
               <div style={{ fontSize: '7vw', fontWeight: 800, color: '#111', marginLeft: '1vw', alignSelf: 'flex-end', marginBottom: '5vw', letterSpacing: '-0.05em' }}>초</div>
               
               {/* 우측 상단 설명 텍스트 */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', whiteSpace: 'normal', width: '550px', alignSelf: 'flex-start', marginLeft: '4vw', paddingTop: '2vw' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', whiteSpace: 'normal', width: '100%', maxWidth: '550px', alignSelf: 'flex-start', marginLeft: '4vw', paddingTop: '2vw' }}>
                 <p style={{ fontSize: '2.4rem', fontWeight: 800, color: '#111', wordBreak: 'keep-all', lineHeight: 1.4, margin: 0 }}>
                   그 어떤 결제보다 빠른 속도.<br/>단말기를 쳐다보는 순간, 결제와 적립이 끝납니다.
                 </p>
@@ -96,7 +96,7 @@ export default function DifferentiatorSection() {
                 <span style={{ fontSize: '35vw' }}>0</span>
                 <span style={{ fontSize: '12vw', fontWeight: 800 }}>개</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', whiteSpace: 'normal', width: '700px', marginTop: '3vw', alignSelf: 'flex-start', paddingLeft: '5vw' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', whiteSpace: 'normal', width: '100%', maxWidth: '700px', marginTop: '3vw', alignSelf: 'flex-start', paddingLeft: '5vw' }}>
                 <p style={{ fontSize: '1.6rem', color: '#333', lineHeight: 1.6, margin: 0, fontWeight: 500 }}>
                   카드도, 휴대폰도 꺼낼 필요 없습니다. 페이스페이는 얼굴 자체가 결제 수단이니까요. 흔히 떠올리는 지문이나 홍채도 결국 폰을 꺼내 잠금을 풀어야 하지만, 페이스페이는 그마저도 필요 없습니다. 가진 게 얼굴뿐이어도, 결제는 끝납니다.
                 </p>
@@ -124,6 +124,6 @@ export default function DifferentiatorSection() {
           </div>
         </motion.div>
       </div>
-    </div>
+    </section>
   );
 }

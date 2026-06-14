@@ -166,8 +166,8 @@ function ReceiptVisual() {
 function FriendsVisual() {
   const friends = [
     { emoji: '👩', name: '지현', action: '지갑 뒤지는 중...', gradient: 'linear-gradient(135deg,#667eea,#764ba2)', cardLabel: 'VISA *1234' },
-    { emoji: '👨', name: '준혁', action: '핀번호 입력 중...', gradient: 'linear-gradient(135deg,#f093fb,#f5576c)', cardLabel: 'MASTER *5678' },
-    { emoji: '👩‍🦱', name: '수진', action: '카카오페이 켜는 중...', gradient: 'linear-gradient(135deg,#4facfe,#00f2fe)', cardLabel: '카카오페이' },
+    { emoji: '👨', name: '준혁', action: '계좌이체하려는 중...', gradient: 'linear-gradient(135deg,#f093fb,#f5576c)', cardLabel: '국민은행' },
+    { emoji: '👩‍🦱', name: '수진', action: '삼성페이 켜는 중...', gradient: 'linear-gradient(135deg,#1e3c72,#2a5298)', cardLabel: '삼성페이' },
   ];
   return (
     <div>
@@ -449,7 +449,7 @@ export default function SituationSection() {
   return (
     <section
       className="story-section"
-      data-bgcolor="#F3F4F6"
+      data-bgcolor="#E8C9C1"
       style={{ minHeight: '100vh', justifyContent: 'center', padding: '8vh 20px', margin: 0, background: 'transparent' }}
     >
       {/* 스텝 진행 바 */}
@@ -491,7 +491,7 @@ export default function SituationSection() {
       </motion.div>
 
       {/* 메인 카드 */}
-      <div style={{ width: '90%', maxWidth: '480px', position: 'relative' }}>
+      <div style={{ width: '95%', maxWidth: '720px', position: 'relative' }}>
         <AnimatePresence custom={dir} mode="wait">
           <motion.div
             key={step}
@@ -505,7 +505,7 @@ export default function SituationSection() {
               background: '#FFFFFF',
               border: '1px solid #EEF0F3',
               borderRadius: '28px',
-              padding: '2.2rem 1.75rem',
+              padding: '3rem 2.5rem',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -518,7 +518,7 @@ export default function SituationSection() {
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.05, type: 'spring', bounce: 0.5 }}
-              style={{ fontSize: '2.2rem', lineHeight: 1 }}
+              style={{ fontSize: '3rem', lineHeight: 1 }}
             >
               {current.scene}
             </motion.div>
@@ -528,7 +528,7 @@ export default function SituationSection() {
               <h2 style={{
                 color: '#191F28',
                 fontWeight: 900,
-                fontSize: 'clamp(1.5rem,5vw,2rem)',
+                fontSize: 'clamp(1.8rem, 6vw, 2.5rem)',
                 margin: 0,
                 letterSpacing: '-0.5px',
                 lineHeight: 1.2,
@@ -536,7 +536,7 @@ export default function SituationSection() {
                 {current.title}
               </h2>
               {current.subtitle && (
-                <p style={{ color: '#6B7684', margin: '0.4rem 0 0', fontSize: '0.9rem', lineHeight: 1.55 }}>
+                <p style={{ color: '#6B7684', margin: '0.6rem 0 0', fontSize: '1.1rem', lineHeight: 1.6 }}>
                   {current.subtitle}
                 </p>
               )}

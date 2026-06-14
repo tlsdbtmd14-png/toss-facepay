@@ -37,7 +37,7 @@ const VideoStream = ({ stream, className, onFrameCapture }: { stream: MediaStrea
 };
 
 export default function FacePayExperience() {
-  const [step, setStep] = useState<'idle' | 'scanning' | 'success' | 'fail'>('idle');
+  const [step, setStep] = useState<'idle' | 'scanning' | 'success' | 'fail' | 'permission_error'>('idle');
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -64,7 +64,7 @@ export default function FacePayExperience() {
       // 기존 5초 자동 성공 로직 삭제 -> 유저가 클릭할 때까지 무한 대기!
     } catch (err) {
       console.error(err);
-      alert("카메라 접근을 허용해 주셔야 가상 체험이 가능합니다.");
+      setStep('permission_error');
     }
   };
 
@@ -88,7 +88,7 @@ export default function FacePayExperience() {
   }, []);
 
   return (
-    <section id="face-pay-experience-section" className="face-pay-section" data-bgcolor="#EBF5FF" style={{ background: 'transparent', padding: '10vh 0', margin: 0 }}>
+    <section id="face-pay-experience-section" className="face-pay-section" data-bgcolor="#CDE0FF" style={{ background: 'transparent', padding: '10vh 0', margin: 0 }}>
       <motion.div
         className="device-frame-wrapper"
         initial={{ opacity: 0, y: 50 }}
@@ -184,6 +184,20 @@ export default function FacePayExperience() {
                       <span style={{ fontSize: '1rem', color: '#6b7684', fontWeight: 'normal', display: 'block', marginTop: '0.5rem' }}>사진으로는 결제할 수 없습니다</span>
                     </div>
                     <button className="reset-btn" onClick={resetExperience} style={{ marginTop: '1.5rem', backgroundColor: '#e53e3e' }}>다시 하기</button>
+                  </motion.div>
+                )}
+
+                {step === 'permission_error' && (
+                  <motion.div key="permission_error" className="face-pay-success fail-state" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}>
+                    <div className="success-icon" style={{ backgroundColor: '#f59e0b', fontSize: '2.5rem' }}>🔒</div>
+                    <div className="receipt-text" style={{ textAlign: 'center', color: '#191F28', fontSize: '1.4rem' }}>
+                      카메라 권한 필요<br/>
+                      <span style={{ fontSize: '0.85rem', color: '#6b7684', fontWeight: 'normal', display: 'block', marginTop: '0.8rem', lineHeight: 1.5 }}>
+                        주소창 왼쪽의 자물쇠 아이콘(🔒)을 눌러<br/>
+                        카메라 권한을 <strong>허용</strong>으로 변경해주세요.
+                      </span>
+                    </div>
+                    <button className="reset-btn" onClick={startExperience} style={{ marginTop: '1.5rem', backgroundColor: '#3182f6', fontSize: '0.9rem', padding: '0.8rem 1.2rem' }}>권한 허용 후 다시 시도</button>
                   </motion.div>
                 )}
               </AnimatePresence>

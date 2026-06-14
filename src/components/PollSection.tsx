@@ -32,12 +32,11 @@ const CheckMini = () => (
   </svg>
 );
 
-// 걱정 항목 (1·2번이 가장 많았던 걱정 + 각자 연결 페이지)
 const OPTIONS: { text: string; fill: number; top: boolean; modal?: ModalType }[] = [
   { text: '내 얼굴 데이터, 안전한가요?', fill: 100, top: true, modal: 'security' },
   { text: '인식이 잘 안되면 어쩌죠?', fill: 82, top: true, modal: 'recognition' },
-  { text: '금융사고가 일어날 것 같음', fill: 40, top: false },
-  { text: '단말기에 얼굴 노출 부담', fill: 26, top: false },
+  { text: '금융사고가 걱정돼요', fill: 40, top: false },
+  { text: '단말기에 얼굴 노출이 부담스러워요', fill: 26, top: false },
 ];
 
 export default function PollSection() {
@@ -281,56 +280,65 @@ export default function PollSection() {
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '0.85rem' }}>
+                <div className="poll-explore-wrapper" style={{ display: 'flex', flexDirection: 'row', gap: '0.85rem' }}>
                   {topOptions.map((opt, i) => (
                     <motion.div
                       key={i}
+                      className="poll-explore-card"
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
+                      whileHover={{ translateY: -4, boxShadow: '0 12px 30px rgba(0,0,0,0.08)', borderColor: '#3182F6' }}
                       transition={{ delay: 0.15 + i * 0.12, duration: 0.5, ease }}
+                      onClick={() => setModal(opt.modal ?? null)}
                       style={{
                         flex: 1,
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        background: '#F7F8FA',
+                        justifyContent: 'flex-start',
+                        background: 'linear-gradient(135deg, #f5f9ff 0%, #fdfdff 100%)',
                         border: '1px solid #EEF0F3',
                         borderRadius: '18px',
-                        padding: '1.25rem 1.3rem',
+                        padding: '1.6rem 1.4rem',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'hidden'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.85rem' }}>
+                      <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
+                        {i === 0 ? '🔒' : '🎭'}
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '1rem', flexDirection: 'column' }}>
                         <span style={{
-                          background: '#3182F6', color: '#fff', fontSize: '0.66rem', fontWeight: 800,
-                          padding: '2px 8px', borderRadius: '100px', whiteSpace: 'nowrap', flexShrink: 0,
-                          marginTop: '0.15rem'
+                          background: '#e8f3ff', color: '#1B64DA', fontSize: '0.75rem', fontWeight: 800,
+                          padding: '4px 10px', borderRadius: '100px', whiteSpace: 'nowrap', flexShrink: 0,
                         }}>
                           걱정 {i + 1}
                         </span>
                         <span style={{ 
-                          color: '#191F28', fontWeight: 700, fontSize: '0.95rem', 
-                          letterSpacing: '-0.3px', lineHeight: 1.4, wordBreak: 'keep-all' 
+                          color: '#191F28', fontWeight: 700, fontSize: '1.1rem', 
+                          letterSpacing: '-0.4px', lineHeight: 1.45, wordBreak: 'keep-all', marginTop: '0.5rem'
                         }}>
                           {opt.text}
                         </span>
                       </div>
-                      <motion.button
-                        className="worry-cta"
-                        onClick={() => setModal(opt.modal ?? null)}
-                        whileHover={{ scale: 1.02, backgroundColor: '#1B64DA' }}
-                        whileTap={{ scale: 0.98 }}
-                        style={{
-                          width: '100%',
-                          background: '#3182F6', color: '#FFFFFF', border: 'none',
-                          borderRadius: '12px', padding: '0.85rem',
-                          fontSize: '0.95rem', fontWeight: 800, cursor: 'pointer',
-                          letterSpacing: '-0.2px', boxShadow: '0 8px 20px rgba(49,130,246,0.28)',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.3rem',
-                        }}
-                      >
-                        한번 알아볼까요?
-                        <Chevron color="#fff" size={17} />
-                      </motion.button>
+                      <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
+                        <motion.button
+                          className="worry-cta"
+                          whileHover={{ scale: 1.02, backgroundColor: '#1B64DA' }}
+                          whileTap={{ scale: 0.98 }}
+                          style={{
+                            width: '100%',
+                            background: '#3182F6', color: '#FFFFFF', border: 'none',
+                            borderRadius: '12px', padding: '0.85rem',
+                            fontSize: '0.95rem', fontWeight: 800, cursor: 'pointer',
+                            letterSpacing: '-0.2px', boxShadow: '0 8px 20px rgba(49,130,246,0.28)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.3rem',
+                          }}
+                        >
+                          한번 알아볼까요?
+                          <Chevron color="#fff" size={17} />
+                        </motion.button>
+                      </div>
                     </motion.div>
                   ))}
                 </div>
@@ -388,7 +396,7 @@ function ModalContent({ modal, setModal }: { modal: 'security' | 'recognition', 
             style={{
               position: 'fixed', top: 0, left: 0,
               width: '100vw', height: '100vh',
-              background: 'linear-gradient(135deg, #F0F7FF 0%, #F5F3FF 50%, #FFF0F6 100%)',
+              background: LIGHT_BG,
               backgroundAttachment: 'fixed',
               zIndex: 9999,
               overflowY: 'auto',

@@ -20,8 +20,8 @@ export default function ScrollIndicator({ totalSections = 10 }: { totalSections?
         },
         {
           root: null,
-          rootMargin: '-10% 0px',
-          threshold: 0.3,
+          rootMargin: '-50% 0px -50% 0px',
+          threshold: 0,
         }
       );
 

@@ -166,61 +166,85 @@ function EncryptionVisualizer({ scrollContainer }: { scrollContainer?: React.Ref
 
             {/* 3단계 프로세스 텍스트 (색상 변경 없이 부드럽게 떠오르는 애니메이션) */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.65)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
+              background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%)',
+              backdropFilter: 'blur(40px)',
+              WebkitBackdropFilter: 'blur(40px)',
               borderRadius: '32px',
-              padding: '3.5rem 3rem',
-              border: '1px solid rgba(255, 255, 255, 0.8)',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.06)',
+              padding: '4.5rem 3.5rem',
+              border: '1px solid rgba(255, 255, 255, 0.9)',
+              boxShadow: '0 30px 60px rgba(0,0,0,0.08), inset 0 2px 4px rgba(255,255,255,0.8)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
-              gap: '2.5rem',
+              gap: '3rem',
             }}>
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: cur >= 0 ? 1 : 0, y: cur >= 0 ? 0 : 40 }}
+                animate={{ 
+                  opacity: cur >= 0 ? (cur === 0 ? 1 : 0.3) : 0, 
+                  y: cur >= 0 ? 0 : 40,
+                  scale: cur === 0 ? 1.05 : 1,
+                  transformOrigin: 'left center'
+                }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                style={{
+                style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}
+              >
+                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: cur === 0 ? '#3182f6' : '#8B95A1', letterSpacing: '1px' }}>STEP 1</span>
+                <span style={{
                   fontSize: '1.8rem',
                   fontWeight: 700,
-                  color: '#191F28',
+                  color: cur === 0 ? '#191F28' : '#8B95A1',
                   lineHeight: 1.5,
                   wordBreak: 'keep-all',
-                }}
-              >
-                최초 얼굴 등록 시, 얼굴의 특징점과 선을 수치화하고
+                }}>
+                  최초 얼굴 등록 시, 얼굴의 특징점과 선을 수치화하고
+                </span>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: cur >= 1 ? 1 : 0, y: cur >= 1 ? 0 : 40 }}
+                animate={{ 
+                  opacity: cur >= 1 ? (cur === 1 ? 1 : 0.3) : 0, 
+                  y: cur >= 1 ? 0 : 40,
+                  scale: cur === 1 ? 1.05 : 1,
+                  transformOrigin: 'left center'
+                }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                style={{
+                style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}
+              >
+                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: cur === 1 ? '#3182f6' : '#8B95A1', letterSpacing: '1px' }}>STEP 2</span>
+                <span style={{
                   fontSize: '1.8rem',
                   fontWeight: 700,
-                  color: '#191F28',
+                  color: cur === 1 ? '#191F28' : '#8B95A1',
                   lineHeight: 1.5,
                   wordBreak: 'keep-all',
-                }}
-              >
-                암호화된 데이터로 변환하여 인터넷이 연결되지 않은 안전한 토스 서버에만 저장됩니다.
+                }}>
+                  암호화된 데이터로 변환하여 인터넷이 연결되지 않은 안전한 토스 서버에만 저장됩니다.
+                </span>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: cur >= 2 ? 1 : 0, y: cur >= 2 ? 0 : 40 }}
+                animate={{ 
+                  opacity: cur >= 2 ? (cur === 2 ? 1 : 0.3) : 0, 
+                  y: cur >= 2 ? 0 : 40,
+                  scale: cur === 2 ? 1.05 : 1,
+                  transformOrigin: 'left center'
+                }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                style={{
+                style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}
+              >
+                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: cur === 2 ? '#3182f6' : '#8B95A1', letterSpacing: '1px' }}>STEP 3</span>
+                <span style={{
                   fontSize: '1.8rem',
                   fontWeight: 700,
-                  color: '#191F28',
+                  color: cur === 2 ? '#191F28' : '#8B95A1',
                   lineHeight: 1.5,
                   wordBreak: 'keep-all',
-                }}
-              >
-                결제 매장의 단말기나 서버에는 고객의 얼굴 정보가 절대 남지 않습니다.
+                }}>
+                  결제 매장의 단말기나 서버에는 고객의 얼굴 정보가 절대 남지 않습니다.
+                </span>
               </motion.div>
             </div>
             
@@ -250,7 +274,10 @@ const LAYERS = [
     color: '#3182f6',
     title: '가짜 얼굴로는 절대 뚫을 수 없습니다',
     sub: '실시간 안면 위변조 검증',
-    desc: '전용 단말기 \'토스 프론트\'의 정교한 스캐닝과 라이브니스(Liveness) 기술이 눈 깜빡임과 미세한 움직임을 감지해 사진이나 영상을 통한 위조를 원천 차단합니다. 또한, 얼굴의 기하학적 굴곡 깊이까지 계산하여 화장이나 헤어스타일 변화는 물론 쌍둥이까지 정확하게 구분해 냅니다.',
+    desc: [
+      '전용 단말기 \'토스 프론트\'의 정교한 스캐닝과 <strong>라이브니스(Liveness) 기술</strong>이 눈 깜빡임과 미세한 움직임을 감지해 사진이나 영상을 통한 위조를 <strong>원천 차단</strong>합니다.',
+      '또한, 얼굴의 기하학적 굴곡 깊이까지 계산하여 <strong>화장이나 헤어스타일 변화</strong>는 물론 <strong>쌍둥이까지 정확하게 구분</strong>해 냅니다.'
+    ],
   },
   {
     iconBefore: '📸',
@@ -258,7 +285,11 @@ const LAYERS = [
     color: '#8b5cf6',
     title: '원본 얼굴 사진은 즉시 영구 삭제됩니다',
     sub: '암호 가치 변환 및 즉시 파기',
-    desc: '촬영된 얼굴은 단말기나 클라우드에 사진 형태로 절대 저장되지 않습니다. 획득 즉시 암호화된 벡터 데이터로 변환되며, 원본 사진은 나노초(ns) 단위로 완전히 파기됩니다. 복호화가 불가능한 일방향 암호화 방식을 적용하여, 혹시라도 정보가 유출되더라도 원래 얼굴을 복원하는 것은 전산학적으로 불가능합니다.',
+    desc: [
+      '촬영된 얼굴은 단말기나 클라우드에 <strong>사진 형태로 절대 저장되지 않습니다.</strong>',
+      '획득 즉시 암호화된 벡터 데이터로 변환되며, 원본 사진은 <strong>나노초(ns) 단위로 완전히 파기</strong>됩니다.',
+      '<strong>복호화가 불가능한 일방향 암호화 방식</strong>을 적용하여, 혹시라도 정보가 유출되더라도 원래 얼굴을 복원하는 것은 <strong>전산학적으로 불가능</strong>합니다.'
+    ],
   },
   {
     iconBefore: '👀',
@@ -266,7 +297,10 @@ const LAYERS = [
     color: '#22c55e',
     title: '24시간 철통 감시, 의심 거래는 즉각 차단',
     sub: '실시간 이상거래탐지 (FDS)',
-    desc: '단순한 얼굴 인식을 넘어, 당신의 평소 거래 맥락(결제 금액, 시간, 위치, 단말기 패턴 등)을 24시간 실시간으로 분석합니다. 만약 평소와 다른 위험하거나 의심스러운 결제 시도가 포착되면, 즉시 추가 인증을 요구하거나 한도를 낮춰 혹시 모를 신원 탈취 가능성까지 완벽하게 방어합니다.',
+    desc: [
+      '단순한 얼굴 인식을 넘어, 당신의 평소 거래 맥락(결제 금액, 시간, 위치, 단말기 패턴 등)을 <strong>24시간 실시간으로 분석</strong>합니다.',
+      '만약 평소와 다른 위험하거나 의심스러운 결제 시도가 포착되면, 즉시 <strong>추가 인증을 요구하거나 한도를 낮춰</strong> 혹시 모를 신원 탈취 가능성까지 완벽하게 방어합니다.'
+    ],
   },
 ];
 
@@ -411,9 +445,18 @@ function AppleSecurityCard({ layer, index, containerRef }: { layer: any, index: 
               backdropFilter: 'blur(10px)'
             }}
           >
-            <p style={{ color: '#333D4B', fontSize: 'clamp(1.1rem, 2vw, 1.35rem)', lineHeight: 1.65, margin: 0, wordBreak: 'keep-all', fontWeight: 600, letterSpacing: '-0.3px' }}>
-              {layer.desc}
-            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+              {Array.isArray(layer.desc) ? layer.desc.map((d: any, i: number) => (
+                <p key={i} style={{ color: '#333D4B', fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', lineHeight: 1.6, margin: 0, wordBreak: 'keep-all', fontWeight: 500, letterSpacing: '-0.3px', position: 'relative', paddingLeft: '1.2rem' }}>
+                  <span style={{ position: 'absolute', left: 0, top: '0.55rem', width: '6px', height: '6px', borderRadius: '50%', background: layer.color }} />
+                  <span dangerouslySetInnerHTML={{ __html: d }} />
+                </p>
+              )) : (
+                <p style={{ color: '#333D4B', fontSize: 'clamp(1.1rem, 2vw, 1.35rem)', lineHeight: 1.65, margin: 0, wordBreak: 'keep-all', fontWeight: 600, letterSpacing: '-0.3px' }}>
+                  {layer.desc}
+                </p>
+              )}
+            </div>
           </motion.div>
 
         </motion.div>
@@ -445,7 +488,7 @@ export default function SecurityConcernSection({ containerRef }: { containerRef?
             <span style={{ color: '#3182F6' }}>절대 유출되지 않아요</span>
           </h2>
           <p style={{ color: '#6B7684', marginTop: '1.2rem', fontSize: '1.2rem', lineHeight: 1.6, fontWeight: 500, letterSpacing: '-0.3px' }}>
-            당신의 얼굴 정보가 어떻게 안전하게 지켜지는지<br />3D 시뮬레이션으로 투명하게 보여드릴게요.
+            당신의 얼굴 정보가 어떻게 안전하게 지켜지는지<br />보여드릴게요.
           </p>
         </motion.div>
       </div>

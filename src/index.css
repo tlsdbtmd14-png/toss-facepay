@@ -1000,3 +1000,80 @@ section {
   text-align: right;
   font-weight: 600;
 }
+/* --- Mobile Responsive Extra CSS --- */
+@media (max-width: 768px) {
+  /* PollSection.tsx */
+  .poll-explore-wrapper {
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+  .poll-explore-card {
+    min-width: 100% !important;
+    padding: 2rem 1.5rem !important;
+  }
+
+  /* SecurityConcernSection.tsx */
+  .security-card-inner {
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 2rem 1.5rem !important;
+    gap: 2rem !important;
+  }
+  .security-card-inner > div {
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* RecognitionConcernSection.tsx */
+  .recognition-flex-container {
+    flex-direction: column !important;
+    gap: 2rem !important;
+    padding: 0 1rem !important;
+  }
+  .recognition-flex-container > div {
+    flex: none !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+  }
+  .recognition-flex-container img {
+    max-width: 80vw !important;
+  }
+
+  /* FacePayExperience.tsx */
+  .device-frame-container {
+    max-width: 320px !important;
+  }
+  .face-pay-idle .camera-icon-placeholder {
+    font-size: 3rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .face-pay-idle .start-btn {
+    padding: 0.8rem 1.5rem !important;
+    font-size: 1rem !important;
+  }
+}
+/* --- Kinetic Text Masking Effect --- */
+.kinetic-text-mask {
+  background: linear-gradient(
+    90deg,
+    #111111 0%,
+    #111111 40%,
+    #3182F6 50%,
+    #4ADE80 60%,
+    #111111 80%,
+    #111111 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shine 4s linear infinite;
+  display: inline-block;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
