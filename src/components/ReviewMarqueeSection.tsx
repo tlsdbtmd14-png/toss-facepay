@@ -160,7 +160,7 @@ export default function ReviewSection() {
   ];
 
   return (
-    <section data-bgcolor="#FFF0F6" style={{ background: 'transparent', paddingBottom: '20vh', width: '100%' }}>
+    <section data-bgcolor="#FFF0F6" style={{ background: 'transparent', paddingBottom: '20vh', width: '100%', display: 'block' }}>
       
       {/* 1. 타이틀 (일반 스크롤, 100vh로 꽉 채워서 영수증 섹션과 완전히 분리) */}
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', zIndex: 10, position: 'relative' }}>

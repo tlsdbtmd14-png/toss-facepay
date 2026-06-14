@@ -22,7 +22,7 @@ export default function DifferentiatorSection() {
     <section 
       ref={containerRef}
       data-bgcolor="#C4B5FD"
-      style={{ height: '400vh', position: 'relative', width: '100%', background: 'transparent', margin: '0' }}
+      style={{ height: '400vh', position: 'relative', width: '100%', background: 'transparent', margin: '0', display: 'block' }}
     >
       <div style={{
         position: 'sticky', 
