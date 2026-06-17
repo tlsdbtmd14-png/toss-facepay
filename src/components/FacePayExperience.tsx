@@ -37,7 +37,7 @@ const VideoStream = ({ stream, className, onFrameCapture }: { stream: MediaStrea
 };
 
 export default function FacePayExperience() {
-  const [step, setStep] = useState<'idle' | 'scanning' | 'success' | 'fail' | 'permission_error'>('idle');
+  const [step, setStep] = useState<'idle' | 'scanning' | 'success' | 'fail' | 'permission_error' | 'no_camera'>('idle');
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -62,9 +62,13 @@ export default function FacePayExperience() {
       setCapturedPhoto(null);
       setStep('scanning');
       // 기존 5초 자동 성공 로직 삭제 -> 유저가 클릭할 때까지 무한 대기!
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setStep('permission_error');
+      if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        setStep('no_camera');
+      } else {
+        setStep('permission_error');
+      }
     }
   };
 
@@ -198,6 +202,20 @@ export default function FacePayExperience() {
                       </span>
                     </div>
                     <button className="reset-btn" onClick={startExperience} style={{ marginTop: '1.5rem', backgroundColor: '#3182f6', fontSize: '0.9rem', padding: '0.8rem 1.2rem' }}>권한 허용 후 다시 시도</button>
+                  </motion.div>
+                )}
+
+                {step === 'no_camera' && (
+                  <motion.div key="no_camera" className="face-pay-success fail-state" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}>
+                    <div className="success-icon" style={{ backgroundColor: '#6b7684', fontSize: '2.5rem' }}>📹</div>
+                    <div className="receipt-text" style={{ textAlign: 'center', color: '#191F28', fontSize: '1.4rem' }}>
+                      카메라를 찾을 수 없음<br/>
+                      <span style={{ fontSize: '0.85rem', color: '#6b7684', fontWeight: 'normal', display: 'block', marginTop: '0.8rem', lineHeight: 1.5 }}>
+                        이 기기에 연결된 카메라가 없습니다.<br/>
+                        카메라가 있는 기기(스마트폰 등)로 접속해주세요.
+                      </span>
+                    </div>
+                    <button className="reset-btn" onClick={resetExperience} style={{ marginTop: '1.5rem', backgroundColor: '#8b95a1', fontSize: '0.9rem', padding: '0.8rem 1.2rem' }}>돌아가기</button>
                   </motion.div>
                 )}
               </AnimatePresence>
