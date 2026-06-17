@@ -168,7 +168,11 @@ function LivenessVisualizer({ scrollContainerRef }: { scrollContainerRef?: React
                 src="/동그란 눈 이미지.png"
                 alt="Face Open Eyes"
                 animate={{ opacity: [1, 1, 0, 1, 1] }} 
-                transition={{ duration: 3.5, repeat: Infinity, times: [0, 0.45, 0.5, 0.55, 1] }}
+                transition={{ 
+                  duration: 2.4, repeat: Infinity, 
+                  times: [0, 0.42, 0.5, 0.58, 1], 
+                  ease: "easeInOut" 
+                }}
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }}
               />
               {/* 감은 눈 이미지 */}
@@ -176,7 +180,11 @@ function LivenessVisualizer({ scrollContainerRef }: { scrollContainerRef?: React
                 src="/눈 감은 얼굴 이미지.png"
                 alt="Face Closed Eyes"
                 animate={{ opacity: [0, 0, 1, 0, 0] }} 
-                transition={{ duration: 3.5, repeat: Infinity, times: [0, 0.45, 0.5, 0.55, 1] }}
+                transition={{ 
+                  duration: 2.4, repeat: Infinity, 
+                  times: [0, 0.42, 0.5, 0.58, 1], 
+                  ease: "easeInOut" 
+                }}
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', transform: 'scale(1.08)' }}
               />
             </div>
